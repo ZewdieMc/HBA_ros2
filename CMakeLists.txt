@@ -1,53 +1,54 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(hba)
 
 set(CMAKE_BUILD_TYPE "Release")
-ADD_COMPILE_OPTIONS(-std=c++17)
-set(CMAKE_CXX_FLAGS "-std=c++17 -O3" )
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fexceptions")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -std=c++17 -fexceptions")
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -pthread -fexceptions")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  rosbag
-  std_msgs
-  geometry_msgs
-  visualization_msgs
-  tf
-)
-
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(PCL REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(GTSAM REQUIRED QUIET)
+find_package(pcl_conversions REQUIRED)
+find_package(rosbag2_cpp REQUIRED)
+find_package(rosbag2_cpp REQUIRED)  # Add this line
 
-catkin_package(
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
-)
+
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
   ${GTSAM_INCLUDE_DIR}
 )
 
-catkin_package(
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs visualization_msgs tf
-  DEPENDS EIGEN3 PCL
-  INCLUDE_DIRS
+add_executable(hba src/hhba.cpp)
+target_link_libraries(hba ${PCL_LIBRARIES} gtsam)
+ament_target_dependencies(hba rclcpp std_msgs geometry_msgs visualization_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions   rosbag2_cpp )
+
+add_executable(visualize_map src/vvisualize.cpp)
+target_link_libraries(visualize_map ${PCL_LIBRARIES})
+ament_target_dependencies(visualize_map rclcpp std_msgs visualization_msgs PCL Eigen3 pcl_conversions visualization_msgs tf2 tf2_ros   rosbag2_cpp)
+
+# add_executable(calculate_MME src/calculate_MME.cpp)
+# target_link_libraries(calculate_MME ${PCL_LIBRARIES} gtsam)
+# ament_target_dependencies(calculate_MME rclcpp std_msgs geometry_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions)
+
+install(TARGETS
+  hba
+  visualize_map
+  # calculate_MME
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-# Hierarchical Bundle Adjustment
-add_executable(hba source/hba.cpp)
-target_link_libraries(hba ${catkin_LIBRARIES} ${PCL_LIBRARIES} gtsam)
-
-add_executable(visualize_map source/visualize.cpp)
-target_link_libraries(visualize_map ${catkin_LIBRARIES} ${PCL_LIBRARIES})
-
-add_executable(calculate_MME source/calculate_MME.cpp)
-target_link_libraries(calculate_MME ${catkin_LIBRARIES} ${PCL_LIBRARIES} gtsam)
+ament_package()
