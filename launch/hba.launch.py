@@ -15,9 +15,9 @@ def generate_launch_description():
         name='hba',
         output='screen',
         parameters=[{
-            'data_path': '/home/sam/Desktop/kitti07/',
+            'data_path': '/home/zed/Desktop/SC_PGO/data/',
             'total_layer_num': 3,
-            'pcd_name_fill_num': 5,  # set 5 for kitti07 and 0 for park
+            'pcd_name_fill_num': 6,
             'thread_num': 16
         }]
     )
