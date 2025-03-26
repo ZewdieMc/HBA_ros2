@@ -3,7 +3,7 @@ import launch_ros.actions
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction
 from launch.substitutions import LaunchConfiguration
-
+import os
 
 def generate_launch_description():
     rviz_arg = DeclareLaunchArgument(
@@ -15,9 +15,9 @@ def generate_launch_description():
         name='visualize_map',
         output='screen',
         parameters=[{
-            'file_path': '/home/sam/Desktop/kitti07/',#! change this according to the pcd directory
+            'file_path': '/home/zed/Desktop/SC_PGO/data/',#! change this according to the pcd directory
             'downsample_size': 0.1,
-            'pcd_name_fill_num': 5,  # set 5 for kitti07 and 0 for park
+            'pcd_name_fill_num': 6,  # set 5 for kitti07 and 0 for park
             'marker_size': 0.5
         }]
     )
@@ -26,9 +26,9 @@ def generate_launch_description():
         condition=launch.conditions.IfCondition(LaunchConfiguration('rviz')),
         package='rviz2',
         executable='rviz2',
-        name='rviz',
-        arguments=['-d', '/home/zed/thesis_ws/src/HBA/rviz_cfg/rosbag.rviz']
-    )
+        name='rvizhba',
+        arguments=["-d", os.path.join(os.getenv("ALOAM_VELODYNE_PATH", ""), "rviz_cfg/hba.rviz")]
+        )
 
     return LaunchDescription([
         rviz_arg,
