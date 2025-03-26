@@ -13,7 +13,7 @@
 typedef std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> > vector_vec3d;
 typedef std::vector<Eigen::Quaterniond, Eigen::aligned_allocator<Eigen::Quaterniond> > vector_quad;
 // typedef pcl::PointXYZINormal PointType;
-typedef pcl::PointXYZ PointType;
+typedef pcl::PointXYZI PointType;
 // typedef pcl::PointXYZI PointType;
 typedef Eigen::Matrix<double, 6, 6> Matrix6d;
 
@@ -56,9 +56,8 @@ namespace mypcl
     std::fstream file;
     file.open(filename);
     double tx, ty, tz, w, x, y, z;
-    while(!file.eof())
+    while(file >> tx >> ty >> tz >> w >> x >> y >> z)
     {
-      file >> tx >> ty >> tz >> w >> x >> y >> z;
       Eigen::Quaterniond q(w, x, y, z);
       Eigen::Vector3d t(tx, ty, tz);
       pose_vec.push_back(pose(qe * q, qe * t + te));
