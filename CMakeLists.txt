@@ -32,13 +32,13 @@ include_directories(
   ${GTSAM_INCLUDE_DIR}
 )
 
-add_executable(hba src/hhba.cpp)
+add_executable(hba src/hba.cpp)
 target_link_libraries(hba ${PCL_LIBRARIES} gtsam)
-ament_target_dependencies(hba rclcpp std_msgs geometry_msgs visualization_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions   rosbag2_cpp )
+ament_target_dependencies(hba rclcpp std_msgs geometry_msgs visualization_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions rosbag2_cpp )
 
-add_executable(visualize_map src/vvisualize.cpp)
+add_executable(visualize_map src/visualize.cpp)
 target_link_libraries(visualize_map ${PCL_LIBRARIES})
-ament_target_dependencies(visualize_map rclcpp std_msgs visualization_msgs PCL Eigen3 pcl_conversions visualization_msgs tf2 tf2_ros   rosbag2_cpp)
+ament_target_dependencies(visualize_map rclcpp std_msgs visualization_msgs PCL Eigen3 pcl_conversions visualization_msgs tf2 tf2_ros rosbag2_cpp)
 
 # add_executable(calculate_MME src/calculate_MME.cpp)
 # target_link_libraries(calculate_MME ${PCL_LIBRARIES} gtsam)
@@ -51,4 +51,8 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
 ament_package()
