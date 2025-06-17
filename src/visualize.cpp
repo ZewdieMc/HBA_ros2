@@ -80,7 +80,6 @@ private:
         // std::string dummy;
         // std::getline(std::cin, dummy);
         // std::cout<<"starting to publishe the map"<<std::endl;
-        std::cout << "PointType is: " << typeid(PointType).name() << std::endl;
 
         for (size_t i = 0; i < pose_size; i++)
         {
@@ -103,6 +102,7 @@ private:
             cloudMsg.header.frame_id = "camera_init";
             cloudMsg.header.stamp = cur_t;
             pub_map->publish(cloudMsg);
+            // std::this_thread::sleep_for(std::chrono::milliseconds(20));
             geometry_msgs::msg::Pose apose;
             apose.orientation.w = pose_vec[i].q.w();
             apose.orientation.x = pose_vec[i].q.x();

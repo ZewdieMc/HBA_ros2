@@ -86,7 +86,7 @@ void parallel_comp(LAYER &layer, int thread_id, LAYER &next_layer)
         src_pc.resize(WIN_SIZE);
         raw_pc.resize(WIN_SIZE);
 
-        double residual_cur = 0, residual_pre = 0;
+        double residual_cur = 0, residual_pre = 0;  
         vector<IMUST> x_buf(WIN_SIZE);
         for (int j = 0; j < WIN_SIZE; j++)
         {

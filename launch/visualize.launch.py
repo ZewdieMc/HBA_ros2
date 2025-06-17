@@ -9,16 +9,21 @@ def generate_launch_description():
     rviz_arg = DeclareLaunchArgument(
         'rviz', default_value='1', description='Launch RViz')
 
+    dataset_name_arg = DeclareLaunchArgument(
+        'dataset_name', default_value='greenhouse/', description='Name of the dataset folder')
+    
     visualize_map_node = launch_ros.actions.Node(
         package='hba',
         executable='visualize_map',
         name='visualize_map',
         output='screen',
         parameters=[{
-            'file_path': '/home/zed/Desktop/SC_PGO/data/',#! change this according to the pcd directory
+            'file_path': launch.substitutions.PathJoinSubstitution([
+                '/home/zed/Desktop/SC_PGO/data/', LaunchConfiguration('dataset_name')
+            ]),
             'downsample_size': 0.1,
             'pcd_name_fill_num': 6,  # set 5 for kitti07 and 0 for park
-            'marker_size': 0.5
+            'marker_size': 5.0
         }]
     )
 
@@ -32,6 +37,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         rviz_arg,
+        dataset_name_arg,
         visualize_map_node,
         rviz_node
     ])

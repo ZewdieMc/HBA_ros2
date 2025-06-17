@@ -40,14 +40,14 @@ add_executable(visualize_map src/visualize.cpp)
 target_link_libraries(visualize_map ${PCL_LIBRARIES})
 ament_target_dependencies(visualize_map rclcpp std_msgs visualization_msgs PCL Eigen3 pcl_conversions visualization_msgs tf2 tf2_ros rosbag2_cpp)
 
-# add_executable(calculate_MME src/calculate_MME.cpp)
-# target_link_libraries(calculate_MME ${PCL_LIBRARIES} gtsam)
-# ament_target_dependencies(calculate_MME rclcpp std_msgs geometry_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions)
+add_executable(calculate_MME src/calculate_MME.cpp)
+target_link_libraries(calculate_MME ${PCL_LIBRARIES} gtsam)
+ament_target_dependencies(calculate_MME rclcpp std_msgs geometry_msgs tf2 tf2_ros PCL Eigen3 pcl_conversions)
 
 install(TARGETS
   hba
   visualize_map
-  # calculate_MME
+  calculate_MME
   DESTINATION lib/${PROJECT_NAME}
 )
 

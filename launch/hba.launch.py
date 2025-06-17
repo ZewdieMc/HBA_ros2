@@ -15,10 +15,10 @@ def generate_launch_description():
         name='hba',
         output='screen',
         parameters=[{
-            'data_path': '/home/zed/Desktop/SC_PGO/data/',
+            'data_path': '/home/zed/Desktop/SC_PGO/data/kitti_00/',
             'total_layer_num': 3,
             'pcd_name_fill_num': 6,
-            'thread_num': 16
+            'thread_num': 10
         }]
     )
 
@@ -33,5 +33,5 @@ def generate_launch_description():
     return LaunchDescription([
         rviz_arg,
         hba_node,
-        rviz_node
+        # rviz_node
     ])
